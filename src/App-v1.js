@@ -25,32 +25,20 @@ export default function App() {
 }
 
 function Accordion({ data }) {
-  //lifting the state up to control toggle
-  // when one accordion opens, the rest would close
-  const [curOpen, setCurOpen] = useState("null");
-
   return (
     <div className="accordion ">
       {data.map((el, i) => (
-        <AccordionItem
-          num={i}
-          title={el.title}
-          key={el.title}
-          curOpen={curOpen}
-          onOpen={setCurOpen}
-        >
-          {el.text}
-        </AccordionItem>
+        <AccordionItem num={i} title={el.title} text={el.text} key={el.title} />
       ))}
     </div>
   );
 }
 
-function AccordionItem({ num, title, curOpen, onOpen, children }) {
-  const isOpen = num === curOpen;
+function AccordionItem({ num, title, text }) {
+  const [isOpen, setIsOpen] = useState(false);
 
   function handleToggle() {
-    onOpen(isOpen ? null : num);
+    setIsOpen((isOpen) => !isOpen);
   }
 
   return (
@@ -58,7 +46,7 @@ function AccordionItem({ num, title, curOpen, onOpen, children }) {
       <span className="number">{num <= 9 ? `0${num + 1}` : num + 1}</span>
       <p className="title">{title}</p>
       <span className="icon">{isOpen ? "-" : "+"}</span>
-      <div className="content-box">{isOpen && children}</div>
+      <div className="content-box">{isOpen && text}</div>
     </div>
   );
 }
